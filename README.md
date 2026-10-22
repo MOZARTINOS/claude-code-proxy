@@ -57,6 +57,7 @@ This lightweight proxy acts as an intermediary between Claude Code (CLI or VS Co
 4. **Fixes Schema Discrepancies**: Translates `role: 'system'` inside message history into `role: 'user'` and removes non-standard `tool_addition`/`tool_removal` blocks that trigger 400 errors.
 5. **Prevents Brotli Compression Crashes**: Strips `accept-encoding: br` to ensure pristine, uncorrupted error messages.
 6. **Preserves Model Selection**: Keeps your chosen model (e.g., `claude-opus-5-5`, `claude-sonnet-5-5`, etc.) intact with zero downgrades.
+7. **Credit Pre-Auth Overdraft Protection**: Safely clamps excessive `max_tokens` allocations (e.g., Claude Code's internal background `remember-summarizer` requesting 128,000 output tokens on Haiku for a single-sentence memory log). This prevents Anthropic's API gateway from rejecting requests with `400: Credit balance is too low` during pre-authorization credit holds on prepaid or promotional balances.
 
 ---
 
