@@ -14,13 +14,36 @@
 
 ## The Problem
 
-Anthropic provides monthly promotional API credits to developers (e.g. $100/month for Max/Team subscribers). However, by official policy, Anthropic **restricts Claude Code** from utilizing promotional credits, throwing:
+Anthropic provides recurring monthly API credits to subscribers on **Max** and **Team** plans (see [API credits for Max and Team plans](https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers)):
+
+| Subscription Tier | Included Monthly API Credits | Rollover |
+|-------------------|------------------------------|----------|
+| **Max 5x** | **$100 / month** | ❌ Expires each billing cycle |
+| **Max 20x** | **$200 / month** | ❌ Expires each billing cycle |
+| **Team (Standard Seat)** | **$20 / seat / month** | ❌ Expires each billing cycle |
+| **Team (Premium Seat)** | **$100 / seat / month** (up to $500/mo per org) | ❌ Expires each billing cycle |
+
+### The Arbitrary Exclusion
+These credits are designated for the Claude API (Messages and Batches), Console Playground, and Agent SDK. However, Anthropic's official policy explicitly **excludes Claude Code**:
+
+> *"The credits do not cover interactive usage of Claude Code (whether in the terminal, IDE, desktop, or web apps), nor do they change your chat app usage limits."*  
+> — [Claude Platform Documentation: API credits for subscribers](https://platform.claude.com/docs/en/about-claude/api-credits-for-subscribers)
+
+When an organization with active monthly credits creates an API key and plugs it into Claude Code, Anthropic's edge gateway intercepts the request and rejects it:
 
 ```
 API Error: 400 Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.
 ```
 
-Even if you set `ANTHROPIC_API_KEY`, Claude Code secretly injects hidden telemetry, billing headers, and prompt watermarks that signal Anthropic's edge gateway to reject the call unless you maintain a paid prepaid credit card balance.
+As a result, subscribers are pressured to purchase duplicate prepaid credits with a separate credit card, while their legitimate $100–$500/month allocation expires unused at the end of each billing cycle.
+
+### How Anthropic Enforces the Gate
+Under the hood, Claude Code uses the standard `POST /v1/messages` endpoint. To enforce this billing gate, the Claude Code client secretly fingerprints requests before they leave your machine:
+1. **System Prompt Watermarks**: Injects `x-anthropic-billing-header: cc_version=...` and `You are Claude Code` into system prompts.
+2. **Client Telemetry**: Appends headers such as `anthropic-client: claude-code`, Stainless metadata, and `claude-code-*` beta feature tags.
+3. **OAuth Overrides**: Stale local OAuth session tokens intercept and override developer `x-api-key` headers, redirecting billing to exhausted chat quotas.
+
+When Anthropic's API gateway spots these client markers, it disallows promotional subscriber credits and enforces paid prepaid balances.
 
 ---
 
