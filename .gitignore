@@ -1,0 +1,16 @@
+# Environment variables & secrets
+.env
+*.local
+
+# Logs & temp test dumps
+*.log
+last_error_req.json
+*.tmp
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS artifacts
+.DS_Store
+Thumbs.db

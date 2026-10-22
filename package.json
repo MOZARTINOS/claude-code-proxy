@@ -1,0 +1,19 @@
+{
+  "name": "claude-code-proxy",
+  "version": "1.0.0",
+  "description": "Transparent local reverse proxy for Claude Code enabling standard Anthropic API keys & promotional credits without billing errors.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "anthropic",
+    "proxy",
+    "api",
+    "reverse-proxy"
+  ],
+  "author": "Nikita Alexeev",
+  "license": "MIT"
+}
