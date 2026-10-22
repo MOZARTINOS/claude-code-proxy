@@ -47,7 +47,7 @@ cd claude-code-proxy
 # (Optional) Set your API key in environment or .env
 cp .env.example .env
 
-# Start the proxy
+# Start the proxy directly
 node server.js
 ```
 
@@ -105,13 +105,32 @@ claude
 
 ---
 
-## Windows Background Service (Optional)
+## Persistent Background Service (Windows)
 
-To run the proxy silently in the background on Windows without an open console window:
+When running the proxy in a regular terminal or inside an IDE subprocess, closing the window or reloading the IDE terminates the proxy process, leading to `ECONNREFUSED`.
 
+To ensure 100% uptime, you can register the proxy as an independent persistent background task in **Windows Task Scheduler**:
+
+### Install as Windows Task Scheduler Service (Recommended)
+Run in PowerShell:
+```powershell
+.\install_task.ps1
+# or using npm:
+npm run install-service
+```
+This registers a task `ClaudeCodeProxy` that runs detached in your user session and starts automatically upon Windows logon.
+
+### Uninstall
+```powershell
+.\uninstall_task.ps1
+# or using npm:
+npm run uninstall-service
+```
+
+### Alternative: Silent VBS Launcher
+You can also launch silently via VBScript without Task Scheduler:
 - Double-click `run_proxy_background.vbs`.
-- To launch on Windows startup, create a shortcut to `run_proxy_background.vbs` in:
-  `shell:startup` (`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`).
+- To autostart, place a shortcut to `run_proxy_background.vbs` in your Windows Startup folder (`shell:startup` / `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`).
 
 ---
 

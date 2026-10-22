@@ -1,10 +1,12 @@
 {
   "name": "claude-code-proxy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Transparent local reverse proxy for Claude Code enabling standard Anthropic API keys & promotional credits without billing errors.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "install-service": "powershell -ExecutionPolicy Bypass -File ./install_task.ps1",
+    "uninstall-service": "powershell -ExecutionPolicy Bypass -File ./uninstall_task.ps1"
   },
   "keywords": [
     "claude",
