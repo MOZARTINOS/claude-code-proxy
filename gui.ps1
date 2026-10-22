@@ -111,11 +111,11 @@ function Refresh-Status {
         $json = & node "$toggleScript" status | ConvertFrom-Json
         $txtKey.Text = $json.apiKey
         if ($json.active) {
-            $lblStatus.Text = "● PROXY ACTIVE (API Credits Mode, Port 3000)"
+            $lblStatus.Text = "STATUS: ACTIVE (Port 3000 - API Credits Mode)"
             $lblStatus.ForeColor = [System.Drawing.Color]::FromArgb(158, 206, 106)
             $lblInfo.Text = "Claude Code in VS Code is routing requests through proxy."
         } else {
-            $lblStatus.Text = "○ PROXY DISABLED (Default Direct Anthropic Mode)"
+            $lblStatus.Text = "STATUS: DISABLED (Direct Anthropic Mode)"
             $lblStatus.ForeColor = [System.Drawing.Color]::FromArgb(169, 177, 214)
             $lblInfo.Text = "Claude Code is connected directly to Anthropic servers."
         }
