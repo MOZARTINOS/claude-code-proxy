@@ -55,7 +55,7 @@ $txtKey.ForeColor = [System.Drawing.Color]::White
 $form.Controls.Add($txtKey)
 
 $btnSaveKey = New-Object System.Windows.Forms.Button
-$btnSaveKey.Text = "Сохранить"
+$btnSaveKey.Text = "Save Key"
 $btnSaveKey.Font = $fontLabel
 $btnSaveKey.Location = New-Object System.Drawing.Point(412, 148)
 $btnSaveKey.Size = New-Object System.Drawing.Size(108, 28)
@@ -65,7 +65,7 @@ $btnSaveKey.FlatStyle = "Flat"
 $form.Controls.Add($btnSaveKey)
 
 $btnEnable = New-Object System.Windows.Forms.Button
-$btnEnable.Text = " Включить прокси (API Кредиты)"
+$btnEnable.Text = "Enable Proxy (API Credits Mode)"
 $btnEnable.Font = $fontButton
 $btnEnable.Location = New-Object System.Drawing.Point(24, 202)
 $btnEnable.Size = New-Object System.Drawing.Size(496, 46)
@@ -76,7 +76,7 @@ $btnEnable.Cursor = [System.Windows.Forms.Cursors]::Hand
 $form.Controls.Add($btnEnable)
 
 $btnDisable = New-Object System.Windows.Forms.Button
-$btnDisable.Text = " Выключить (Вернуть как было без прокси)"
+$btnDisable.Text = "Disable Proxy (Revert to Default)"
 $btnDisable.Font = $fontButton
 $btnDisable.Location = New-Object System.Drawing.Point(24, 258)
 $btnDisable.Size = New-Object System.Drawing.Size(496, 44)
@@ -87,7 +87,7 @@ $btnDisable.Cursor = [System.Windows.Forms.Cursors]::Hand
 $form.Controls.Add($btnDisable)
 
 $btnLogs = New-Object System.Windows.Forms.Button
-$btnLogs.Text = " Открыть логи"
+$btnLogs.Text = "View Logs"
 $btnLogs.Font = $fontText
 $btnLogs.Location = New-Object System.Drawing.Point(24, 318)
 $btnLogs.Size = New-Object System.Drawing.Size(140, 32)
@@ -97,7 +97,7 @@ $btnLogs.FlatStyle = "Flat"
 $form.Controls.Add($btnLogs)
 
 $lblInfo = New-Object System.Windows.Forms.Label
-$lblInfo.Text = "Готов к работе"
+$lblInfo.Text = "Ready"
 $lblInfo.Font = $fontText
 $lblInfo.ForeColor = [System.Drawing.Color]::FromArgb(115, 122, 162)
 $lblInfo.Location = New-Object System.Drawing.Point(180, 324)
@@ -111,16 +111,16 @@ function Refresh-Status {
         $json = & node "$toggleScript" status | ConvertFrom-Json
         $txtKey.Text = $json.apiKey
         if ($json.active) {
-            $lblStatus.Text = "● ПРОКСИ АКТИВЕН (Режим API-кредитов, порт 3000)"
+            $lblStatus.Text = "● PROXY ACTIVE (API Credits Mode, Port 3000)"
             $lblStatus.ForeColor = [System.Drawing.Color]::FromArgb(158, 206, 106)
-            $lblInfo.Text = "Claude Code в VS Code отправляет запросы через прокси."
+            $lblInfo.Text = "Claude Code in VS Code is routing requests through proxy."
         } else {
-            $lblStatus.Text = "○ ПРОКСИ ВЫКЛЮЧЕН (Официальный режим по умолчанию)"
+            $lblStatus.Text = "○ PROXY DISABLED (Default Direct Anthropic Mode)"
             $lblStatus.ForeColor = [System.Drawing.Color]::FromArgb(169, 177, 214)
-            $lblInfo.Text = "Claude Code подключён напрямую к серверам Anthropic."
+            $lblInfo.Text = "Claude Code is connected directly to Anthropic servers."
         }
     } catch {
-        $lblStatus.Text = "Ошибка проверки статуса"
+        $lblStatus.Text = "Error checking status"
         $lblStatus.ForeColor = [System.Drawing.Color]::Red
     }
 }
@@ -129,7 +129,7 @@ $btnSaveKey.Add_Click({
     $k = $txtKey.Text.Trim()
     if ($k) {
         & node "$toggleScript" save-key "$k"
-        $lblInfo.Text = "Ключ успешно сохранён!"
+        $lblInfo.Text = "API Key saved successfully!"
         $lblInfo.ForeColor = [System.Drawing.Color]::FromArgb(158, 206, 106)
         Refresh-Status
     }
@@ -138,14 +138,14 @@ $btnSaveKey.Add_Click({
 $btnEnable.Add_Click({
     $k = $txtKey.Text.Trim()
     & node "$toggleScript" enable "$k"
-    $lblInfo.Text = "Прокси успешно включён и настроен!"
+    $lblInfo.Text = "Proxy enabled and configured successfully!"
     $lblInfo.ForeColor = [System.Drawing.Color]::FromArgb(158, 206, 106)
     Refresh-Status
 })
 
 $btnDisable.Add_Click({
     & node "$toggleScript" disable
-    $lblInfo.Text = "Прокси выключен. Все настройки возвращены назад."
+    $lblInfo.Text = "Proxy disabled. Original settings restored."
     $lblInfo.ForeColor = [System.Drawing.Color]::FromArgb(247, 118, 142)
     Refresh-Status
 })
@@ -155,7 +155,7 @@ $btnLogs.Add_Click({
     if (Test-Path $logPath) {
         Start-Process notepad.exe $logPath
     } else {
-        [System.Windows.Forms.MessageBox]::Show("Файл логов ещё не создан.", "Логи")
+        [System.Windows.Forms.MessageBox]::Show("Log file does not exist yet.", "Logs")
     }
 })
 
