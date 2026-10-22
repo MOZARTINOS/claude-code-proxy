@@ -33,12 +33,39 @@ This lightweight proxy acts as an intermediary between Claude Code (CLI or VS Co
 
 ---
 
-## Quick Start
+## Desktop GUI Control Panel (Windows)
+
+The repository includes a modern graphical control panel for Windows with zero dependencies (runs on native Windows Forms):
+
+![GUI Control Panel](https://raw.githubusercontent.com/MOZARTINOS/claude-code-proxy/main/.github/preview.png) *(or open via shortcut)*
+
+### Features:
+- **1-Click Mode Toggle**:
+  - 🟢 **Enable Proxy (API Credits)**: Automatically configures VS Code & CLI settings to use the local proxy and launches the background service.
+  - ⚪ **Disable Proxy (Revert to Default)**: Completely reverts VS Code & CLI settings back to official Anthropic direct connection and restores subscription credentials.
+- **In-App API Key Manager**: Edit and save your Anthropic API key directly in the UI.
+- **Real-Time Status**: Visual indicator of whether the proxy is active on port 3000.
+- **Live Logs**: Open `run.log` in Notepad to inspect model requests and status codes.
+
+### Launch GUI or Create Desktop Shortcut:
+```powershell
+# Create Desktop Shortcut:
+npm run create-shortcut
+# or: powershell -ExecutionPolicy Bypass -File .\create_shortcut.ps1
+
+# Launch GUI directly:
+npm run gui
+# or: powershell -ExecutionPolicy Bypass -File .\gui.ps1
+```
+
+---
+
+## Quick Start (Manual / Headless)
 
 ### 1. Requirements
 - Node.js 18 or newer (no `npm install` needed — pure native Node.js).
 
-### 2. Run the Proxy
+### 2. Run the Proxy Directly
 ```bash
 # Clone the repository
 git clone https://github.com/MOZARTINOS/claude-code-proxy.git
@@ -47,7 +74,7 @@ cd claude-code-proxy
 # (Optional) Set your API key in environment or .env
 cp .env.example .env
 
-# Start the proxy directly
+# Start the proxy
 node server.js
 ```
 
@@ -105,14 +132,13 @@ claude
 
 ---
 
-## Persistent Background Service (Windows)
+## Persistent Background Service (Windows Task Scheduler)
 
 When running the proxy in a regular terminal or inside an IDE subprocess, closing the window or reloading the IDE terminates the proxy process, leading to `ECONNREFUSED`.
 
 To ensure 100% uptime, you can register the proxy as an independent persistent background task in **Windows Task Scheduler**:
 
-### Install as Windows Task Scheduler Service (Recommended)
-Run in PowerShell:
+### Install as Windows Task Scheduler Service
 ```powershell
 .\install_task.ps1
 # or using npm:
@@ -120,17 +146,12 @@ npm run install-service
 ```
 This registers a task `ClaudeCodeProxy` that runs detached in your user session and starts automatically upon Windows logon.
 
-### Uninstall
+### Uninstall Service
 ```powershell
 .\uninstall_task.ps1
 # or using npm:
 npm run uninstall-service
 ```
-
-### Alternative: Silent VBS Launcher
-You can also launch silently via VBScript without Task Scheduler:
-- Double-click `run_proxy_background.vbs`.
-- To autostart, place a shortcut to `run_proxy_background.vbs` in your Windows Startup folder (`shell:startup` / `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`).
 
 ---
 

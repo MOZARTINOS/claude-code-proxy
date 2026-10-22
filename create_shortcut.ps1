@@ -12,4 +12,4 @@ $Shortcut.Description = "Claude Code Proxy Control Panel"
 $Shortcut.IconLocation = "shell32.dll,44"
 $Shortcut.Save()
 
-Write-Host "SUCCESS: Shortcut created at '$shortcutPath'."
+Write-Host "SUCCESS: Desktop shortcut created cleanly at '$shortcutPath'."

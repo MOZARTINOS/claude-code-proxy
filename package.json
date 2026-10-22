@@ -1,10 +1,12 @@
 {
   "name": "claude-code-proxy",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Transparent local reverse proxy for Claude Code enabling standard Anthropic API keys & promotional credits without billing errors.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "gui": "powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File ./gui.ps1",
+    "create-shortcut": "powershell -ExecutionPolicy Bypass -File ./create_shortcut.ps1",
     "install-service": "powershell -ExecutionPolicy Bypass -File ./install_task.ps1",
     "uninstall-service": "powershell -ExecutionPolicy Bypass -File ./uninstall_task.ps1"
   },
@@ -14,7 +16,8 @@
     "anthropic",
     "proxy",
     "api",
-    "reverse-proxy"
+    "reverse-proxy",
+    "gui-manager"
   ],
   "author": "Nikita Alexeev",
   "license": "MIT"
