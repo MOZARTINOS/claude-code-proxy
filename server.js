@@ -149,16 +149,14 @@ const server = http.createServer((req, res) => {
         }
 
         // 4. Token limit sanity check (Prevents Anthropic "Credit balance is too low" 400 errors)
-        // Claude Code's internal background summarizer (remember-summarizer) requests 128,000 max_tokens
-        // to generate a single-sentence session summary on Haiku.
-        // Anthropic's gateway performs an upfront credit hold: (max_tokens * price). A 128k hold fails
-        // instantly with 400 "Credit balance is too low" on prepaid accounts, despite active Opus coding.
-        // Clamping excessive token allocations protects API balance and allows memory logs to succeed:
-        if (typeof json.max_tokens === 'number') {
-          if (json.model && json.model.includes('haiku') && json.max_tokens > 8192) {
+        // Claude Code uses Haiku for background memory logs (remember-summarizer) and context compaction.
+        // The Claude Code SDK inadvertently passes max_tokens: 128000 to Haiku, even though Anthropic API's
+        // official architectural output limit for the Claude Haiku family is strictly 8,192 tokens.
+        // This mismatch causes Anthropic's upfront credit reservation to fail with 400 "Credit balance is too low".
+        // We safely clamp Haiku requests to its official architectural ceiling of 8,192 tokens:
+        if (typeof json.max_tokens === 'number' && json.model && json.model.includes('haiku')) {
+          if (json.max_tokens > 8192) {
             json.max_tokens = 8192;
-          } else if (json.max_tokens > 64000) {
-            json.max_tokens = 16384;
           }
           if (json.thinking && typeof json.thinking.budget_tokens === 'number' && json.thinking.budget_tokens >= json.max_tokens) {
             json.thinking.budget_tokens = Math.max(1024, json.max_tokens - 1024);
