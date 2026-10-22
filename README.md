@@ -41,7 +41,9 @@ This lightweight proxy acts as an intermediary between Claude Code (CLI or VS Co
 
 The repository includes a modern graphical control panel for Windows with zero dependencies (runs on native Windows Forms):
 
-![GUI Control Panel](https://raw.githubusercontent.com/MOZARTINOS/claude-code-proxy/main/.github/preview.png) *(or open via shortcut)*
+<p align="center">
+  <img src="assets/gui_preview.png" alt="GUI Control Panel" width="480" />
+</p>
 
 ### Features:
 - **1-Click Mode Toggle**:
