@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.jpg" alt="Claude Code Proxy Banner" width="100%" />
+</p>
+
 # Claude Code Proxy
 
 > **Transparent reverse proxy enabling standard Anthropic API keys & promotional developer credits with Claude Code.**
